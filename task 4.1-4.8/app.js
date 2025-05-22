@@ -67,3 +67,55 @@ let obj = {
   };
   
   console.log(String(obj));
+  
+//Задача 7 Преобразование к строке
+//  Сделай объект user, чтобы при String(user) возвращалось "Пользователь" (никаких Symbol'ов — только обычные методы)
+
+const user = {
+  toString() {
+    return 'Пользователь';
+  }
+};
+
+console.log(String(user)); 
+
+// Задача 8: Символический контроль
+//  Создай объект item, у которого при:
+// +item → 0
+// String(item) → "вещь"
+// item == 1 → false
+// Используй только Symbol.toPrimitive
+
+
+const item = {
+  [Symbol.toPrimitive](hint){
+    if(hint === 'number') return 0
+    if(hint === 'string') return 'Вещь'
+    if(hint === 'default') return false
+  }
+}
+console.log(+item)
+console.log(String(item))
+console.log(item === 1)
+
+//  Задача 9: 
+// 👉 Сделай объект tricky, который выдаёт true при tricky == 42,
+// но String(tricky) возвращает [object Object] (то есть не переопределяй toString напрямую).
+
+const tricky = {
+  [Symbol.toPrimitive](hint){
+    if(hint==='default') return 42
+  }
+}
+console.log(tricky == 42)
+
+
+// Задача 10:  Создай объект bad, который при любом преобразовании (+bad, String(bad), alert(bad))
+// всегда выбрасывает ошибку "Cannot convert to primitive".
+const bad = {
+  [Symbol.toPrimitive](hint) {
+    return {};
+  }
+};
+
+console.log(String(bad)); //TypeError: Cannot convert object to primitive value
