@@ -69,13 +69,10 @@ console.log(getWeekDay(date))
 // Напишите функцию getLocalDay(date), которая возвращает «европейский» день недели для даты date.
 
 function getLocalDay(date) {
-
   let day = date.getDay();
-
   if (day == 0) { 
     day = 7;
   }
-
   return day;
 }
 // 6. Какой день месяца был много дней назад?
@@ -90,3 +87,76 @@ function getDateAgo(date, days){
     return newDate.getDate()
 }
 console.log(getDateAgo(date2, 5))
+
+// 7. Напишитие функцию для получения последнего дня месяца по заданной дате
+
+function getLastDayMonth(date){
+  let newDate = new Date(date)
+      newDate.setMonth(newDate.getMonth() + 1, 1)
+      newDate.setDate(newDate.getDate() - 1)
+  return newDate.toISOString().slice(0, 10) 
+}
+let date = new Date(2025, 07, 27)
+console.log(getLastDayMonth(date))
+
+//8. Сделать функцию formatDate(date), которая:
+// Если дата сегодня → "Сегодня в HH:MM".
+// Если вчера → "Вчера в HH:MM".
+// Если в этом году → "ДД Месяц HH:MM".
+// Иначе → "ДД.ММ.ГГГГ HH:MM".
+let date = new Date("2025, 2, 25") 
+
+function formatDate(date) {
+  let humanDate = new Date(date) 
+  humanDate.setHours(0, 0, 0, 0)
+
+  let year = humanDate.getFullYear()
+  let month = humanDate.getMonth() + 1 
+  let days = humanDate.getDate()
+  let hours = humanDate.getHours()
+  let minutes = humanDate.getMinutes()
+
+  let today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  let yesterday = new Date(today)
+  yesterday.setDate(today.getDate() - 1)
+  yesterday.setHours(0, 0, 0, 0)
+
+  if (humanDate.getTime() === yesterday.getTime()) {
+    return "вчера"
+  } else if (humanDate.getTime() === today.getTime()) {
+    return "сегодня"
+  } else {
+    let mm = month < 10 ? "0" + month : month
+    let dd = days < 10 ? "0" + days : days
+    return `${dd}.${mm}.${year}`
+  }
+}
+
+console.log(formatDate(date))
+
+
+// 9. Сколько сегодня прошло секунд?
+// Напишите функцию getSecondsToday(), возвращающую количество секунд с начала сегодняшнего дня.
+let date = new Date()
+function getSecondsToday(date){
+  let newDate = new Date(date)
+  newDate.setHours(0,0,0,0)
+  let todayHours = new Date()
+  let result = Math.round((todayHours.getTime() - newDate.getTime()) / 1000)
+  
+  return result
+}
+
+console.log(getSecondsToday(date))
+
+// 10.Сколько секунд осталось до завтра?
+// Создайте функцию getSecondsToTomorrow(), возвращающую количество секунд до завтрашней даты.
+function getSecondsToTomorrow() {
+  let now = new Date();
+  let tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate()+1);
+
+  let diff = tomorrow - now; 
+  return Math.round(diff / 1000);
+}
