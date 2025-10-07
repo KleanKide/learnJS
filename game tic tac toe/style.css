@@ -1,0 +1,39 @@
+body{
+  text-align: center;
+}
+main{
+  display:flex;
+  width: 100%;
+  height: 300px;
+  justify-content:center; 
+  align-items:center
+}
+
+.area{
+ display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 10px; 
+}
+
+.item{
+  width: 100px;
+  height:100px;
+  background-color: gray;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circle::before {
+  content: '0';
+  font-size: 60px;
+  color: black;
+}
+
+.crosses::before {
+  content: 'X';
+  font-size: 60px;
+  color: red;
+}
