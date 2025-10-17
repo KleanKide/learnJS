@@ -15,9 +15,11 @@ let step = 'crosses'
 function whoStep() {
   if (step === 'circle') {
     step = 'crosses'
+
   }
   else {
     step = 'circle'
+     
   }
 }
 whoStep()
@@ -47,6 +49,7 @@ function addElem(elem) {
   if (!elem.target.classList.contains('circle') && !elem.target.classList.contains('crosses')) {
     elem.target.classList.add(step)
   }
+ 
   whoStep()
   winner(win)
 }
@@ -57,3 +60,10 @@ function stopGame(item) {
     elem.removeEventListener('click', addElem)
   })
 }
+
+
+
+function randomIntFromInterval(min, max) { 
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+const randomNumber = randomIntFromInterval(0, 8);
