@@ -48,3 +48,66 @@ function debounce(func, ms) {
     timeID = setTimeout(() => func.apply(this, arguments), ms);
   };
 }
+
+
+
+// Сделай декоратор doubleResult(fn), который:
+// вызывает оригинальную функцию;
+// возвращает результат, умноженный на 2.
+
+// Пример:
+function add(a, b) { return a + b }
+function squareArgs(fn){
+  return function(...args){
+    const newVal = args.map(i => i * i)
+    const result = fn(...newVal)
+    return result
+  }
+}
+
+const squaredAdd = squareArgs(add);
+
+console.log(squaredAdd(2, 3)); 
+
+
+
+// Сделай декоратор stringifyResult(fn), который:
+// вызывает функцию;
+// возвращает результат в виде строки.
+
+
+function stringifyResult(fn){
+  return function(...args){
+    const newVal = fn(...args)
+    const result = newVal.toString()
+    return result 
+  }
+}
+function sum(a, b) { return a + b }
+const stringSum = stringifyResult(sum);
+console.log(stringSum(5, 5)); // "10"
+
+
+// Замер времени
+
+// Напиши декоратор timer(fn),
+// который измеряет, сколько миллисекунд заняло выполнение функции,
+// и выводит это в консоль.
+
+
+function timer(fn) {
+  return function (...args) {
+    const startTime = Date.now()
+    const result = fn(...args)
+    const endTime = Date.now()
+    console.log(`Время выполнения: ${endTime - startTime} мс`)
+    return result 
+  }
+}
+
+function sum(a, b) {
+  return a + b
+}
+
+const timedSum = timer(sum)
+console.log(timedSum(5, 5))
