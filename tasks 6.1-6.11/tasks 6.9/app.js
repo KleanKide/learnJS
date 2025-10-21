@@ -111,3 +111,31 @@ function sum(a, b) {
 
 const timedSum = timer(sum)
 console.log(timedSum(5, 5))
+
+// Напиши декоратор limit(fn, n),
+// который позволяет вызвать функцию не более n раз.
+// После этого она должна либо ничего не делать, либо возвращать сообщение вроде "достигнут лимит".
+
+function limit(fn, n){
+  let count = 0
+  return function(...args){
+    if(count >= n){
+      return '"достигнут лимит"'
+    }
+    else{ 
+       count++
+      return fn(...args)
+     
+    }
+  }
+}
+
+function sum(a, b) {
+  return a + b
+}
+
+const limitedSum = limit(sum, 2)
+
+console.log(limitedSum(1, 2)) 
+console.log(limitedSum(3, 4)) 
+console.log(limitedSum(5, 8)) 
