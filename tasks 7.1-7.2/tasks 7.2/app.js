@@ -82,3 +82,57 @@ Object.defineProperty(secureFile, 'content', {
 secureFile.content = 'dsfsdf'
 
 console.log(secureFile.content)
+
+
+
+
+// 4 Тень над прототипом. Что выведет данный код?
+
+const proto = { x: 1 };
+const obj = Object.create(proto);
+
+obj.x = 2;
+delete obj.x;
+
+console.log(obj.x);       // ? 1
+console.log('x' in obj);  // ? true
+console.log(obj.hasOwnProperty('x')); // ? false потому что obj не имеет собственное свойство х он просто его читайет из прототипа 
+
+
+// 5. Что выведет код? Объясни, почему именно так.
+function Animal() {}
+Animal.prototype.eats = true;
+
+const rabbit = new Animal();
+
+Animal.prototype = { jumps: true };
+
+const fox = new Animal();
+
+console.log(rabbit.eats); // true
+console.log(fox.eats);    // undefined  мы переписали ссылку на другой объект на { jumps: true }
+console.log(fox.jumps);   // ? true
+
+
+
+// 6.Твоя задача:
+// Определи, что выведет код, и объясни, откуда берётся каждое свойство (из какого уровня цепочки).
+
+const animal = {
+  eats: true,
+  walk() {
+    return "walks";
+  }
+};
+
+const rabbit = Object.create(animal);
+rabbit.jumps = true;
+
+const longEar = Object.create(rabbit);
+longEar.earLength = 10;
+
+console.log(longEar.eats);   // ? true потому что мы создали как некий шаблон через Object.Create
+console.log(longEar.walk()); // ? walks потому что мы создали как некий шаблон через Object.Create
+console.log(longEar.jumps);  // ? true потому что мы создали как некий шаблон через Object.Create
+console.log(longEar.__proto__ === rabbit); // ? true  ссылается на rabbit
+console.log(rabbit.__proto__ === animal);  // ? true  ссылается на animal
