@@ -1,58 +1,65 @@
-class Teapot {
-  #waterLimit = 200;
-  #waterAmount = 0;
-  #turn = false;
-  #temperatures = [0, 20, 40, 60, 80, 100];
-  #targetTemperature = 100
-  #isBoiled = false;
+ class Teapot {
+    #waterLimit = 200;
+    #waterAmount = 0;
+    #turn = false;
+    #temperatures = [0, 20, 40, 60, 80, 100];
+    #targetTemperature = 100;
+    #isBoiled = false;
 
-  #validWaterAmount(value) {
-    if (value < 0) throw new Error("объем воды ниже нуля");
-    if (value > this.#waterLimit) throw new Error("Слишком много воды");
-  }
-  #validTurnOn(value){
-    if(value) throw new Error ('чайник уже включен')
-  }
-
-  constructor(waterAmount) {
-    if (waterAmount !== undefined) {
-      this.#waterAmount = waterAmount;
+    #validWaterAmount(value) {
+      if (value < 0) throw new Error("объем воды ниже нуля");
+      if (value > this.#waterLimit) throw new Error("Слишком много воды");
     }
-    this.#validWaterAmount(this.#waterAmount);
 
-    this.#validTurnOn(this.#turn)
+
+    constructor(waterAmount) {
+      if (waterAmount !== undefined) {
+        this.#waterAmount = waterAmount;
+      }
+      this.#validWaterAmount(this.#waterAmount);
+    }
+
+
+
+    toggleTurn() {
+      if (this.#turn===true) throw new Error("чайник уже включен");
+      if (this.#waterAmount === 0) throw new Error("Необходимо добавить воды");
+      let tempertures = this.#temperatures;
+      this.#turn= true
+      let leftIndex = 0;
+
+      let timerID = setInterval(() => {
+        let index = tempertures[leftIndex];
+        console.log(index + ' градусов');
+
+        if (index === this.#targetTemperature) {
+          console.log("Вода закипело");
+          console.log("Чайник выключен");
+          this.#isBoiled = true;
+          this.#turn = false;
+          clearInterval(timerID);
+          return;
+        }
+
+        leftIndex++;
+
+        if (leftIndex >= tempertures.length) {
+          this.#turn = false;
+          clearInterval(timerID);
+        }
+      }, 1500);
+    }
+      getStatus(){
+        return {
+         'Включен ли чайник:':  this.#turn,
+         'Количество воды:': this.#waterAmount,
+        'Закипело ли вода:' :this.#isBoiled
+        }
+    }
   }
 
-  toggleTurn() {
-    let tempertures = this.#temperatures;
-    
-   let leftIndex = 0;
-
-let timerID = setInterval(() => {
-  let index = tempertures[leftIndex];
-  console.log(index);
-
-  if (index === this.#targetTemperature) {
-    console.log("Вода закипело");
-    console.log("Чайник выключен");
-    this.#isBoiled = true;
-    this.#turn = false;
-    clearInterval(timerID);
-    return;
-  }
-
-  leftIndex++;
-
-  if (leftIndex >= tempertures.length) {
-    console.log("Чайник выключен");
-    this.#turn = false;
-    clearInterval(timerID);
-  }
-}, 1500);
-  }
-}
-
-const u = new Teapot(200);
-u.toggleTurn();
-
-console.log(u);
+  const u = new Teapot(10);
+  u.toggleTurn();
+ setTimeout(() => {
+  console.log(u.getStatus());
+}, 10000);
