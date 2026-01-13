@@ -30,3 +30,21 @@ function hasMixin(obj, mixin) {
   );
 }
 hasMixin(p, canRun); // true
+
+
+// 3.Реализуй миксин CanEat, который:
+// добавляет метод eat()
+// позволяет проверку:
+
+obj instanceof CanEat // true
+
+
+const CanEat = {
+  eat() {
+    return "eating";
+  },
+
+  [Symbol.hasInstance](obj) {
+    return typeof obj?.eat === "function";
+  }
+};
