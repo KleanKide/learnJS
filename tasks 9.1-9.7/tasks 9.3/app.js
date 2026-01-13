@@ -53,7 +53,7 @@
         return {
          'Включен ли чайник:':  this.#turn,
          'Количество воды:': this.#waterAmount,
-        'Закипело ли вода:' :this.#isBoiled
+         'Закипело ли вода:' :this.#isBoiled
         }
     }
   }
