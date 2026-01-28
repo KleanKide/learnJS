@@ -100,3 +100,61 @@ function promiseError() {
 promiseError().catch((e) => {
   console.log(e);
 });
+
+
+
+// Долг
+// как обработать 
+function myError(x){
+    if(typeof x!=='number'){
+        throw new ValueError('should be number')
+    }
+    return x  
+}
+
+try {
+    setTimeout(() => {
+        myError('2')
+    }, 0);    
+} catch(err) {
+    if (err instanceof Error) {
+        console.log(err.message);
+    }
+    
+    throw new Error('internal error');
+}
+
+// тут кэтч не сработает потому что сеттаймаут асинхронная функция, 
+//а трай кэтч ловит ошибки только в синхронном коде.
+
+// try закончился
+// ошибка произошла ПОЗЖЕ
+// ловить уже некому
+
+// можно так : 
+
+
+setTimeout(() => {
+  try {
+    myError('2')
+  } catch (err) {
+    console.log(err.message)
+  }
+}, 0)
+
+// либо так 
+
+function myError(x) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (typeof x !== 'number') {
+        reject(new Error('should be number'))
+      } else {
+        resolve(x)
+      }
+    }, 1000)
+  })
+}
+
+myError('2')
+  .catch(err => console.log(err.message))
